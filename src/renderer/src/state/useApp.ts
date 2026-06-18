@@ -17,7 +17,7 @@ import {
   providerLabel,
   resolveEndpoint
 } from '@shared/providers'
-import type { Integrations, ProviderConfig } from '@shared/types'
+import type { Integrations, ProviderConfig, UpdateStatus } from '@shared/types'
 import { CATLABEL, HUE, MODES } from '../lib/constants'
 import { L } from '../lib/i18n'
 import { itxt, ntitle, ownerDisp, parseOwner, pname, rid } from '../lib/notes'
@@ -55,6 +55,8 @@ interface AppState {
   integrations: Integrations
   notionToken: string
   notionConnected: boolean
+  appVersion: string
+  update: UpdateStatus
   pcount: number
   loaded: boolean
   menu: MenuState | null
@@ -90,6 +92,8 @@ function freshState(): AppState {
     integrations: {},
     notionToken: '',
     notionConnected: false,
+    appVersion: '',
+    update: { state: 'idle' },
     pcount: 0,
     loaded: false,
     menu: null,
@@ -153,6 +157,19 @@ export function useApp() {
     })()
     return () => {
       alive = false
+    }
+  }, [])
+
+  // ---- auto-update: read version + subscribe to update lifecycle ----
+  useEffect(() => {
+    let alive = true
+    window.catch.getAppVersion().then((v) => {
+      if (alive) setS((p) => ({ ...p, appVersion: v }))
+    })
+    const off = window.catch.onUpdateStatus((status) => setS((p) => ({ ...p, update: status })))
+    return () => {
+      alive = false
+      off()
     }
   }, [])
 
@@ -947,6 +964,39 @@ export function useApp() {
       (!!provInfo && (provInfo.keyless || provInfo.keyOptional) && isConfigured(s.provider, provCfg, false))
     const providerList = PROVIDERS.map((p) => ({ id: p.id, label: p.label }))
 
+    // ---- software update view ----
+    const u = s.update
+    let updText = ''
+    let updAction: 'download' | 'install' | null = null
+    switch (u.state) {
+      case 'checking':
+        updText = T.upd.checking
+        break
+      case 'available':
+        updText = T.upd.available(u.version || '')
+        updAction = 'download'
+        break
+      case 'none':
+        updText = T.upd.latest
+        break
+      case 'progress':
+        updText = T.upd.downloading(u.percent ?? 0)
+        break
+      case 'downloaded':
+        updText = T.upd.ready(u.version || '')
+        updAction = 'install'
+        break
+      case 'error':
+        updText = `${T.upd.errorLabel}: ${u.message || ''}`
+        break
+      default:
+        updText = ''
+    }
+    let updPill: { text: string; action: 'download' | 'install' | null } | null = null
+    if (u.state === 'available') updPill = { text: `${T.upd.pillUpdate} v${u.version}`, action: 'download' }
+    else if (u.state === 'progress') updPill = { text: T.upd.downloading(u.percent ?? 0), action: null }
+    else if (u.state === 'downloaded') updPill = { text: T.upd.pillRestart, action: 'install' }
+
     return {
       brandLabel: T.brand,
       titlebarText: T.titlebar,
@@ -1060,6 +1110,18 @@ export function useApp() {
       notionToken: s.notionToken,
       notionParentValue: s.integrations.notionParentPageId || '',
       obsidianVaultValue: s.integrations.obsidianVault || '',
+      // software update
+      appVersion: s.appVersion,
+      updTitleLabel: T.upd.title,
+      updCheckLabel: T.upd.check,
+      updCurrentText: T.upd.current(s.appVersion || '—'),
+      updText,
+      updChecking: u.state === 'checking',
+      updDownloadLabel: T.upd.download,
+      updRestartLabel: T.upd.restart,
+      updActionDownload: updAction === 'download',
+      updActionInstall: updAction === 'install',
+      updPill,
       isKo: lang === 'ko',
       isEn: lang === 'en',
       langKoBorder: lang === 'ko' ? langSel : langOff,
@@ -1080,6 +1142,9 @@ export function useApp() {
       onNotionParentInput: (v: string) => setIntegration({ notionParentPageId: v }),
       onObsidianVaultInput: (v: string) => setIntegration({ obsidianVault: v }),
       onSaveNotion: saveNotionToken,
+      onCheckUpdate: () => window.catch.checkForUpdates(),
+      onDownloadUpdate: () => window.catch.downloadUpdate(),
+      onInstallUpdate: () => window.catch.installUpdate(),
       onLangKo: () => setS((p) => ({ ...p, lang: 'ko' })),
       onLangEn: () => setS((p) => ({ ...p, lang: 'en' })),
       onTitleInput: (v: string) => patchActive({ title: v }),

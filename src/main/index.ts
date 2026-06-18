@@ -16,6 +16,7 @@ import { loadDotenv } from './env'
 import * as store from './store'
 import { aiEval, aiOrganize, verifyProvider } from './ai'
 import { copyText, exportMarkdown, exportNotion, openObsidian } from './exports'
+import { checkForUpdates, downloadUpdate, initAutoUpdater, installUpdate } from './update'
 
 loadDotenv(app.getAppPath(), process.cwd())
 
@@ -264,6 +265,11 @@ function registerIpc(): void {
     else w.maximize()
   })
   ipcMain.handle(IPC.winClose, (e) => BrowserWindow.fromWebContents(e.sender)?.close())
+
+  ipcMain.handle(IPC.getAppVersion, () => app.getVersion())
+  ipcMain.handle(IPC.updateCheck, () => checkForUpdates())
+  ipcMain.handle(IPC.updateDownload, () => downloadUpdate())
+  ipcMain.handle(IPC.updateInstall, () => installUpdate())
 }
 
 app.whenReady().then(() => {
@@ -272,6 +278,7 @@ app.whenReady().then(() => {
 
   registerIpc()
   createWindow()
+  initAutoUpdater()
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

@@ -75,6 +75,21 @@ export interface Dict {
   obsidianVaultPh: string
   saveLabel: string
   notionSavedText: string
+  upd: {
+    title: string
+    check: string
+    checking: string
+    latest: string
+    download: string
+    restart: string
+    errorLabel: string
+    pillUpdate: string
+    pillRestart: string
+    current: (v: string) => string
+    available: (v: string) => string
+    downloading: (p: number) => string
+    ready: (v: string) => string
+  }
   modeLabel: ModeMap
   coachText: ModeMap
   evalResultGood: string
@@ -198,6 +213,21 @@ export const L: Record<Lang, Dict> = {
     obsidianVaultPh: '내 볼트 (선택)',
     saveLabel: '저장',
     notionSavedText: 'Notion 토큰 저장됨',
+    upd: {
+      title: '소프트웨어 업데이트',
+      check: '업데이트 확인',
+      checking: '확인 중…',
+      latest: '최신 버전을 사용 중이에요.',
+      download: '다운로드',
+      restart: '재시작하여 설치',
+      errorLabel: '업데이트 오류',
+      pillUpdate: '업데이트',
+      pillRestart: '재시작',
+      current: (v) => `현재 버전 v${v}`,
+      available: (v) => `새 버전 v${v} 사용 가능`,
+      downloading: (p) => `다운로드 중… ${p}%`,
+      ready: (v) => `v${v} 설치 준비됨`
+    },
     modeLabel: { meeting: '회의', brainstorm: '브레인스토밍', switch: '작업 전환', daily: '하루 정리' },
     coachText: {
       meeting:
@@ -325,6 +355,21 @@ export const L: Record<Lang, Dict> = {
     obsidianVaultPh: 'My Vault (optional)',
     saveLabel: 'Save',
     notionSavedText: 'Notion token saved',
+    upd: {
+      title: 'Software update',
+      check: 'Check for updates',
+      checking: 'Checking…',
+      latest: "You're on the latest version.",
+      download: 'Download',
+      restart: 'Restart & install',
+      errorLabel: 'Update error',
+      pillUpdate: 'Update',
+      pillRestart: 'Restart',
+      current: (v) => `Current version v${v}`,
+      available: (v) => `New version v${v} available`,
+      downloading: (p) => `Downloading… ${p}%`,
+      ready: (v) => `v${v} ready to install`
+    },
     modeLabel: { meeting: 'Meeting', brainstorm: 'Brainstorm', switch: 'Task switch', daily: 'Daily wrap-up' },
     coachText: {
       meeting:

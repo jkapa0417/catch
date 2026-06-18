@@ -7,7 +7,8 @@ import type {
   ExportPayload,
   PersistedState,
   Provider,
-  ResolvedEndpoint
+  ResolvedEndpoint,
+  UpdateStatus
 } from '@shared/types'
 
 const api: CatchApi = {
@@ -30,7 +31,17 @@ const api: CatchApi = {
   winMinimize: () => ipcRenderer.invoke(IPC.winMinimize),
   winToggleMaximize: () => ipcRenderer.invoke(IPC.winToggleMaximize),
   winClose: () => ipcRenderer.invoke(IPC.winClose),
-  platform: process.platform
+  platform: process.platform,
+
+  getAppVersion: () => ipcRenderer.invoke(IPC.getAppVersion),
+  checkForUpdates: () => ipcRenderer.invoke(IPC.updateCheck),
+  downloadUpdate: () => ipcRenderer.invoke(IPC.updateDownload),
+  installUpdate: () => ipcRenderer.invoke(IPC.updateInstall),
+  onUpdateStatus: (cb: (status: UpdateStatus) => void) => {
+    const listener = (_e: unknown, status: UpdateStatus) => cb(status)
+    ipcRenderer.on(IPC.updateStatus, listener)
+    return () => ipcRenderer.removeListener(IPC.updateStatus, listener)
+  }
 }
 
 if (process.contextIsolated) {

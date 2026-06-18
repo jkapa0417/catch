@@ -187,6 +187,31 @@ export default function SettingsModal({ v }: { v: Vals }) {
           </div>
         </div>
 
+        {/* software update */}
+        <div style={{ padding: '18px 24px 8px', borderTop: '1px solid #E6EAE8', marginTop: 18 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+            <span style={{ font: "800 13px 'Pretendard'", color: '#1D242B' }}>{v.updTitleLabel}</span>
+            <span style={{ font: '600 11px ui-monospace,monospace', color: '#98A2AA' }}>{v.updCurrentText}</span>
+          </div>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 11 }}>
+            <button
+              onClick={v.onCheckUpdate}
+              disabled={v.updChecking}
+              style={{ border: '1.5px solid #CFD6D2', borderRadius: 10, padding: '9px 14px', font: "700 12.5px 'Pretendard'", cursor: v.updChecking ? 'default' : 'pointer', background: '#fff', color: '#5A636D', display: 'flex', alignItems: 'center', gap: 7 }}
+            >
+              {v.updChecking && <span style={{ width: 12, height: 12, border: '2px solid rgba(20,88,74,.3)', borderTopColor: '#14584A', borderRadius: '50%', display: 'inline-block', animation: 'spin .7s linear infinite' }} />}
+              {v.updCheckLabel}
+            </button>
+            {v.updActionDownload && (
+              <button onClick={v.onDownloadUpdate} style={{ border: 'none', borderRadius: 10, padding: '9px 16px', font: "700 12.5px 'Pretendard'", cursor: 'pointer', background: '#14584A', color: '#fff' }}>{v.updDownloadLabel}</button>
+            )}
+            {v.updActionInstall && (
+              <button onClick={v.onInstallUpdate} style={{ border: 'none', borderRadius: 10, padding: '9px 16px', font: "700 12.5px 'Pretendard'", cursor: 'pointer', background: '#14584A', color: '#fff' }}>{v.updRestartLabel}</button>
+            )}
+          </div>
+          {v.updText && <div style={{ font: "600 12px 'Pretendard'", color: '#5A636D', marginTop: 10 }}>{v.updText}</div>}
+        </div>
+
         <div style={{ padding: '0 24px 22px' }}>
           <button onClick={v.onCloseSettings} style={{ width: '100%', border: 'none', borderRadius: 11, padding: 13, font: "800 14px 'Pretendard'", cursor: 'pointer', background: '#1D242B', color: '#fff' }}>{v.doneLabel}</button>
         </div>

@@ -14,5 +14,11 @@ export const IPC = {
   exportNotion: 'catch:export-notion',
   winMinimize: 'catch:win-minimize',
   winToggleMaximize: 'catch:win-toggle-maximize',
-  winClose: 'catch:win-close'
+  winClose: 'catch:win-close',
+  getAppVersion: 'catch:get-app-version',
+  updateCheck: 'catch:update-check',
+  updateDownload: 'catch:update-download',
+  updateInstall: 'catch:update-install',
+  /** main → renderer push channel for update lifecycle events. */
+  updateStatus: 'catch:update-status'
 } as const

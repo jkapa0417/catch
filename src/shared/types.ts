@@ -117,6 +117,27 @@ export interface Result<T> {
   error?: string
 }
 
+// ---- auto-update ----
+
+export type UpdateState =
+  | 'idle'
+  | 'checking'
+  | 'available'
+  | 'none'
+  | 'progress'
+  | 'downloaded'
+  | 'error'
+
+export interface UpdateStatus {
+  state: UpdateState
+  /** Version offered by the update (when available/downloaded). */
+  version?: string
+  /** Download progress 0–100 (state 'progress'). */
+  percent?: number
+  /** Human-readable error or note. */
+  message?: string
+}
+
 export interface ExportPayload {
   /** Suggested file name without extension, e.g. "Q3-roadmap-2026-06-17". */
   filename: string
@@ -161,4 +182,15 @@ export interface CatchApi {
   winClose(): Promise<void>
   /** Host platform, so the renderer can order/space the window controls. */
   platform: NodeJS.Platform
+
+  /** This app's version (from package.json). */
+  getAppVersion(): Promise<string>
+  /** Manually check GitHub Releases for a newer version. */
+  checkForUpdates(): Promise<void>
+  /** Download the available update (progress arrives via onUpdateStatus). */
+  downloadUpdate(): Promise<void>
+  /** Quit and install the downloaded update. */
+  installUpdate(): Promise<void>
+  /** Subscribe to update lifecycle events; returns an unsubscribe function. */
+  onUpdateStatus(cb: (status: UpdateStatus) => void): () => void
 }

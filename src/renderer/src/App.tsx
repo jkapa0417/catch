@@ -36,6 +36,18 @@ export default function App() {
           />
         </div>
         <div style={{ flex: 1, textAlign: 'center', fontSize: 13, fontWeight: 700, color: '#5A636D', letterSpacing: '-.01em' }}>{v.titlebarText}</div>
+        {v.updPill && (
+          <button
+            className="no-drag"
+            onClick={() => (v.updPill!.action === 'install' ? v.onInstallUpdate() : v.updPill!.action === 'download' ? v.onDownloadUpdate() : undefined)}
+            disabled={!v.updPill.action}
+            title={v.updPill.text}
+            style={{ marginRight: 9, border: 'none', background: '#14584A', color: '#fff', borderRadius: 99, padding: '5px 12px', font: "700 11px 'Pretendard'", cursor: v.updPill.action ? 'pointer' : 'default', display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#5FD0A6' }} />
+            {v.updPill.text}
+          </button>
+        )}
         <div className="no-drag" style={{ font: '700 11px ui-monospace,Menlo,monospace', color: '#5A636D', background: '#fff', border: '1px solid #E6EAE8', borderRadius: 99, padding: '5px 12px' }}>{v.muscle.streakText}</div>
       </div>
 

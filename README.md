@@ -124,6 +124,19 @@ builds installers for **Windows, macOS, and Linux** in parallel.
 Builds are **unsigned** (no code-signing certs in CI). To sign, add the relevant
 certificates as repository secrets and wire them into the workflow.
 
+## Auto-update
+
+Installed builds check GitHub Releases for a newer version on launch (and via
+**Settings → Software update → Check for updates**) using `electron-updater`,
+wired to the same `publish` config as the release workflow. When a newer version
+is found, an **Update** pill appears in the title bar — click to download, then
+**Restart** to install. No reinstall needed.
+
+- Works on **Windows (NSIS)** and **Linux (AppImage)** out of the box.
+- **macOS** auto-install requires a **code-signed** app — unsigned mac builds can
+  detect updates but can't self-install (download the new DMG instead).
+- No-ops in `npm run dev` (only packaged builds update).
+
 ## Export integrations
 
 Configured in **Settings → Export integrations** (no env files needed):
