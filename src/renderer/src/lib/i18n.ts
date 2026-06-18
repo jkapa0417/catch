@@ -7,6 +7,7 @@ export interface Dict {
   titlebar: string
   subtitle: string
   settings: string
+  help: string
   newNote: string
   newProject: string
   muscle: string
@@ -145,6 +146,7 @@ export const L: Record<Lang, Dict> = {
     titlebar: '캐치 — 노트 근육 트레이너',
     subtitle: '그냥 적으면, 정리는 익숙해질 때까지',
     settings: '설정',
+    help: '도움말',
     newNote: '새 노트',
     newProject: '프로젝트 추가',
     muscle: '노트 근육',
@@ -287,6 +289,7 @@ export const L: Record<Lang, Dict> = {
     titlebar: 'Catch — Note Muscle Trainer',
     subtitle: "Just jot it down — we organize till it's habit",
     settings: 'Settings',
+    help: 'Help',
     newNote: 'New note',
     newProject: 'Add project',
     muscle: 'Note Muscle',

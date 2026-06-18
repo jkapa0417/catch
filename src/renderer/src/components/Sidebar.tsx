@@ -75,15 +75,27 @@ export default function Sidebar({ v }: { v: Vals }) {
           <div style={{ fontSize: 21, fontWeight: 800, letterSpacing: '-.02em', color: '#fff', lineHeight: 1 }}>{v.brandLabel}</div>
           <div style={{ fontSize: 11, fontWeight: 600, color: '#9CC0B2', marginTop: 5, lineHeight: 1.4 }}>{v.appSubtitle}</div>
         </div>
-        <E
-          tag="button"
-          data-testid="settings-btn"
-          onClick={v.onOpenSettings}
-          s="flex-shrink:0;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#CDE0D7;cursor:pointer;font:700 11px 'Pretendard';padding:6px 11px;border-radius:8px"
-          hov="background:rgba(255,255,255,.13)"
-        >
-          {v.settingsLabel}
-        </E>
+        <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+          <E
+            tag="button"
+            onClick={v.onHelp}
+            title="GitHub Issues"
+            s="border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#CDE0D7;cursor:pointer;font:700 11px 'Pretendard';padding:6px 11px;border-radius:8px;display:flex;align-items:center;gap:5px"
+            hov="background:rgba(255,255,255,.13)"
+          >
+            <span style={{ fontSize: 12, lineHeight: 1, fontWeight: 800 }}>?</span>
+            {v.helpLabel}
+          </E>
+          <E
+            tag="button"
+            data-testid="settings-btn"
+            onClick={v.onOpenSettings}
+            s="border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#CDE0D7;cursor:pointer;font:700 11px 'Pretendard';padding:6px 11px;border-radius:8px"
+            hov="background:rgba(255,255,255,.13)"
+          >
+            {v.settingsLabel}
+          </E>
+        </div>
       </div>
 
       {/* new note */}

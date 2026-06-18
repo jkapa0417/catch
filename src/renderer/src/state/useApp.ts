@@ -1002,6 +1002,7 @@ export function useApp() {
       titlebarText: T.titlebar,
       appSubtitle: T.subtitle,
       settingsLabel: T.settings,
+      helpLabel: T.help,
       newNoteLabel: T.newNote,
       newProjectLabel: T.newProject,
       muscle,
@@ -1133,6 +1134,7 @@ export function useApp() {
       // handlers
       onOpenSettings: () => setS((p) => ({ ...p, settingsOpen: true })),
       onCloseSettings: () => setS((p) => ({ ...p, settingsOpen: false })),
+      onHelp: () => window.open('https://github.com/jkapa0417/catch/issues', '_blank'),
       onProviderChange: (v: Provider) => setS((p) => ({ ...p, provider: v, apiKey: '' })),
       onKeyInput: (v: string) => setS((p) => ({ ...p, apiKey: v })),
       onBaseUrlInput: (v: string) => setProviderCfg({ baseUrl: v }),
