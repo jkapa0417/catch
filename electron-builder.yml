@@ -1,0 +1,43 @@
+appId: com.catch.notehelper
+productName: Catch
+copyright: Copyright © 2026 안준기
+directories:
+  buildResources: build
+  output: release/${version}
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!vitest.config.ts'
+  - '!{.eslintrc.cjs,.prettierrc,.prettierignore,.editorconfig}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml,package-lock.json}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+  - '!{.nvmrc,README.md,CHANGELOG.md}'
+asarUnpack:
+  - resources/**
+mac:
+  target:
+    - dmg
+    - zip
+  category: public.app-category.productivity
+  artifactName: ${productName}-${version}-${arch}.${ext}
+  darkModeSupport: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+win:
+  target:
+    - nsis
+  artifactName: ${productName}-${version}-setup.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+linux:
+  target:
+    - AppImage
+    - deb
+  maintainer: junki.ahn@lge.com
+  category: Utility
+  artifactName: ${productName}-${version}-${arch}.${ext}
+npmRebuild: false
