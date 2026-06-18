@@ -152,3 +152,4 @@ substitute for, or substantially similar product/service to, Catch). Two years
 after each version's release, that version automatically becomes available under
 the **Apache License 2.0**. See [`LICENSE`](LICENSE) for the full terms.
 # catch
+# catch
