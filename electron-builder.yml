@@ -40,4 +40,9 @@ linux:
   maintainer: junki.ahn@lge.com
   category: Utility
   artifactName: ${productName}-${version}-${arch}.${ext}
+publish:
+  provider: github
+  owner: jkapa0417
+  repo: catch
+  releaseType: draft
 npmRebuild: false

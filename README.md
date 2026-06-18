@@ -107,6 +107,23 @@ npm run pack:dir     # unpacked app (no installer) — fast sanity check
 > Add platform icons under `build/` (`icon.icns`, `icon.ico`, `icon.png`) for
 > branded installers; electron-builder falls back to defaults without them.
 
+## Releases (CI)
+
+A GitHub Actions workflow ([`.github/workflows/release.yml`](.github/workflows/release.yml))
+builds installers for **Windows, macOS, and Linux** in parallel.
+
+- **Tag a version** to build + publish a GitHub **draft release** with all installers:
+  ```bash
+  npm version patch        # bumps package.json and creates tag vX.Y.Z
+  git push --follow-tags   # triggers the workflow
+  ```
+  Then review and publish the draft on the repo's Releases page.
+- **Manual run** ("Actions → Release → Run workflow") builds without publishing and
+  attaches the installers as downloadable workflow artifacts.
+
+Builds are **unsigned** (no code-signing certs in CI). To sign, add the relevant
+certificates as repository secrets and wire them into the workflow.
+
 ## Export integrations
 
 Configured in **Settings → Export integrations** (no env files needed):
