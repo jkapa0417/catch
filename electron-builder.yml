@@ -15,6 +15,10 @@ files:
   - '!{.nvmrc,README.md,CHANGELOG.md}'
 asarUnpack:
   - resources/**
+# Ad-hoc sign the macOS .app after packing so unsigned downloads aren't flagged
+# "damaged" on Apple Silicon (no paid Apple Developer cert in CI). Users still
+# allow it once via Settings → Privacy & Security → Open Anyway.
+afterPack: build/after-pack.cjs
 mac:
   target:
     - dmg
