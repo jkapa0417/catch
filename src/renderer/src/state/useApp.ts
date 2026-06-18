@@ -1134,7 +1134,21 @@ export function useApp() {
       // handlers
       onOpenSettings: () => setS((p) => ({ ...p, settingsOpen: true })),
       onCloseSettings: () => setS((p) => ({ ...p, settingsOpen: false })),
-      onHelp: () => window.open('https://github.com/jkapa0417/catch/issues', '_blank'),
+      onHelp: () => {
+        const osName =
+          ({ darwin: 'macOS', win32: 'Windows', linux: 'Linux' } as Record<string, string>)[
+            window.catch.platform
+          ] || window.catch.platform
+        const env = `\n\n---\n- App version: v${s.appVersion || '?'}\n- OS: ${osName}`
+        const body =
+          s.lang === 'ko'
+            ? `## 무슨 일이 있었나요?\n\n(문제나 제안을 적어주세요)\n\n## 재현 방법\n\n1. \n2. \n\n## 예상 동작\n${env}\n`
+            : `## What happened?\n\n(Describe the problem or request)\n\n## Steps to reproduce\n\n1. \n2. \n\n## Expected behavior\n${env}\n`
+        window.open(
+          `https://github.com/jkapa0417/catch/issues/new?body=${encodeURIComponent(body)}`,
+          '_blank'
+        )
+      },
       onProviderChange: (v: Provider) => setS((p) => ({ ...p, provider: v, apiKey: '' })),
       onKeyInput: (v: string) => setS((p) => ({ ...p, apiKey: v })),
       onBaseUrlInput: (v: string) => setProviderCfg({ baseUrl: v }),
